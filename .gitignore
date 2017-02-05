@@ -27,7 +27,14 @@
 *.i*86
 *.x86_64
 *.hex
+sample_ssh_client
 
 # Debug files
 *.dSYM/
 *.su
+
+# CMake build directory
+build
+
+# Generated ssh host keys
+host_keys
