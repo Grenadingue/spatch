@@ -36,6 +36,5 @@ include_directories(
 	${PROJECT_F}
 )
 
-# compilation flags
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lssh")
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -ggdb -lssh")
+# link with libssh library
+target_link_libraries(sample_sshd ssh)
