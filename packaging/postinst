@@ -1,4 +1,4 @@
 pkgname="spatch"
 
 echo "Hiding readability of the configuration file for everyone except root..."
-chmod 600 "/etc/${pkgname}/config"
+chmod 600 "/etc/${pkgname}/config.ini"
