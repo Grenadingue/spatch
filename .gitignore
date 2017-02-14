@@ -38,3 +38,6 @@ build
 
 # Generated ssh host keys
 host_keys
+
+# Package build
+spatch_*
