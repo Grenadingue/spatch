@@ -15,9 +15,14 @@ SYSTEMD_CONFIG_DIR	=	${CONFIG_DIR}/systemd
 # Compilation & packaging virtual environment
 SSH_PORT		=	55022
 SSH_USER		=	mr-spatch
+SSH_PASSWORD		=	${SSH_USER}
 SSH_HOSTNAME		=	localhost
-SSH_SPATCH_LOCATION	=	/home/${SSH_USER}/spatch
-
+SSH_USER_AT_HOST	=	${SSH_USER}@${SSH_HOSTNAME}
+REMOTE_SPATCH_PATH	=	/home/${SSH_USER}/spatch
+SSH_SPATCH_LOCATION	=	${SSH_USER_AT_HOST}:${REMOTE_SPATCH_PATH}
+# Shell commands shortcuts
+SSH			=	ssh -p ${SSH_PORT}
+SCP			=	scp -P ${SSH_PORT}
 
 # Makefile rules
 all:		${NAME}
@@ -43,20 +48,20 @@ local_package:
 # Build debian package inside virtual environment
 remote_package:	fclean_package
 	@echo "Packaging spatch for debian 64bits inside virtual environment..."
-	ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOSTNAME} -t "echo 'ssh connection test'"
-	ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOSTNAME} -t "${RM} ${SSH_SPATCH_LOCATION}"
-	scp -P ${SSH_PORT} -r . ${SSH_USER}@${SSH_HOSTNAME}:${SSH_SPATCH_LOCATION} || true
-	ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOSTNAME} -t "cd ${SSH_SPATCH_LOCATION} && make re local_package"
-	scp -P ${SSH_PORT} -r ${SSH_USER}@${SSH_HOSTNAME}:${SSH_SPATCH_LOCATION}/${PACKAGING_DIR}/${NAME}_* ${PACKAGING_DIR}
+	${SSH} ${SSH_USER_AT_HOST} -t "echo 'ssh connection test'"
+	${SSH} ${SSH_USER_AT_HOST} -t "${RM} ${REMOTE_SPATCH_PATH}"
+	${SCP} -r . ${SSH_SPATCH_LOCATION} || true
+	${SSH} ${SSH_USER_AT_HOST} -t "cd ${REMOTE_SPATCH_PATH} && make re local_package"
+	${SCP} -r ${SSH_SPATCH_LOCATION}/${PACKAGING_DIR}/${NAME}_* ${PACKAGING_DIR}
 	@echo
 	@echo "Package is '`pwd`/`ls ${PACKAGING_DIR}/*.deb`'"
 
 # Install and enable package in virtual environment
 deployment:
 	@echo "Deploying package inside testing environment..."
-	ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOSTNAME} -t "echo 'ssh connection test'"
-	ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOSTNAME} -t "echo ${SSH_USER} | sudo su -c \" \
-	cd ${SSH_SPATCH_LOCATION}/${PACKAGING_DIR} && ls ${NAME}\"*\".deb 1>/dev/null && \
+	${SSH} ${SSH_USER_AT_HOST} -t "echo 'ssh connection test'"
+	${SSH} ${SSH_USER_AT_HOST} -t "echo ${SSH_PASSWORD} | sudo su -c \" \
+	cd ${REMOTE_SPATCH_PATH}/${PACKAGING_DIR} && ls ${NAME}\"*\".deb 1>/dev/null && \
 	systemctl stop ${NAME}.service ; \
 	systemctl status ${NAME}.service ; echo ; \
 	dpkg -i ${NAME}_\"*\".deb && echo ; \
