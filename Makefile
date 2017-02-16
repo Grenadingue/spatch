@@ -94,4 +94,8 @@ fclean_package:
 
 re:		fclean all
 
-.PHONY:		all ${NAME} build package clean fclean re
+.PHONY:		all ${NAME} clean fclean re \
+		build clean_build fclean_build \
+		package local_package fclean_package \
+		remote_package \
+		deployment
