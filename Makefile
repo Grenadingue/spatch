@@ -46,7 +46,7 @@ remote_package:	fclean_package
 	ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOSTNAME} -t "echo 'ssh connection test'"
 	ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOSTNAME} -t "${RM} ${SSH_SPATCH_LOCATION}"
 	scp -P ${SSH_PORT} -r . ${SSH_USER}@${SSH_HOSTNAME}:${SSH_SPATCH_LOCATION} || true
-	ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOSTNAME} -t "cd ${SSH_SPATCH_LOCATION} && ${MAKE} re local_package"
+	ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOSTNAME} -t "cd ${SSH_SPATCH_LOCATION} && make re local_package"
 	scp -P ${SSH_PORT} -r ${SSH_USER}@${SSH_HOSTNAME}:${SSH_SPATCH_LOCATION}/${PACKAGING_DIR}/${NAME}_* ${PACKAGING_DIR}
 	@echo
 	@echo "Package is '`pwd`/`ls ${PACKAGING_DIR}/*.deb`'"
