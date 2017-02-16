@@ -49,6 +49,7 @@ cd ..
 cp -v control "${buildname}/debian/"
 cp -v install "${buildname}/debian/"
 cp -v postinst "${buildname}/debian/"
+cp -v postrm "${buildname}/debian/"
 cp -v copyright "${buildname}/debian/"
 
 echo
