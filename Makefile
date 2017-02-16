@@ -64,7 +64,7 @@ deployment:
 	cd ${REMOTE_SPATCH_PATH}/${PACKAGING_DIR} && ls ${NAME}\"*\".deb 1>/dev/null && \
 	systemctl stop ${NAME}.service ; \
 	systemctl status ${NAME}.service ; echo ; \
-	dpkg -i ${NAME}_\"*\".deb && echo ; \
+	dpkg -i ${NAME}_\"*\".deb ; echo ; \
 	systemctl start ${NAME}.service ; \
 	sleep 3 ; \
 	systemctl status ${NAME}.service \

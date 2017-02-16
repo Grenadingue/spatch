@@ -66,12 +66,12 @@ echo
 echo "Creating debian package target directories..."
 mkdir -p -v "${buildname}/usr/bin/"
 mkdir -p -v "${buildname}/lib/systemd/system/"
-mkdir -p -v "${buildname}/etc/${pkgname}/"
+mkdir -p -v "${buildname}/usr/share/${pkgname}/"
 
 echo
 echo "Copying spatch files into package source..."
 install -Dm755 -v "../build/spatch" "${buildname}/usr/bin/spatch"
-install -Dm600 -v "../config/spatch/config.ini" "${buildname}/etc/${pkgname}/config.ini"
+install -Dm600 -v "../config/spatch/config.ini" "${buildname}/usr/share/${pkgname}/config.ini"
 install -Dm644 -v "../config/systemd/${pkgname}.service" \
     "${buildname}/lib/systemd/system/${pkgname}.service"
 

@@ -1,3 +1,2 @@
-usr/* usr
-lib/* lib
-etc/* etc
+usr/* /usr
+lib/* /lib
