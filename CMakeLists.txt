@@ -1,17 +1,18 @@
+set (CMAKE_CXX_STANDARD 11)
+
+#required cmake version
 cmake_minimum_required (VERSION 2.8.5)
 
-#macro(use_cxx11)
-#  if (CMAKE_VERSION VERSION_LESS "3.1")
-#    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-#      set (CMAKE_CXX_FLAGS "--std=gnu++11 ${CMAKE_CXX_FLAGS}")
-#    endif ()
-#  else ()
-#    set (CMAKE_CXX_STANDARD 11)
-#  endif ()
-#endmacro(use_cxx11)
+# set project directory
+set(PROJECT_F ${CMAKE_CURRENT_SOURCE_DIR})
 
-#use_cxx11()
+### Spatch project
+project (spatch)
 
-project (Spatch)
-add_executable(Spatch source/main.cpp)
-target_link_libraries (Spatch libs)
+# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
+set(CMAKE_MODULE_PATH
+  ${PROJECT_F}/libssh_examples/sample-ssh-server/cmake/Modules
+)
+
+add_executable (spatch ${PROJECT_F}/source/main.cpp)
+target_link_libraries (spatch ssh)
