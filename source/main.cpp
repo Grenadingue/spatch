@@ -7,6 +7,13 @@
 #include <stdio.h>
 #include <errno.h>
 
+#include "AccessListController.hpp"
+#include "ConfigurationController.hpp"
+#include "ConfigurationReader.hpp"
+#include "Endpoint.hpp"
+#include "ServerConfiguration.hpp"
+#include "User.hpp"
+
 #define SSHD_USER "libssh"
 #define SSHD_PASSWORD "libssh"
 
@@ -546,6 +553,13 @@ int client_sample()
 }
 
 int main(int argc, char **argv){
+	AccessListController* foo1 = new AccessListController();
+	ConfigurationReader* foo2 = new ConfigurationReader();
+	ConfigurationController* foo3 = new ConfigurationController();
+	Endpoint* foo4 = new Endpoint();
+	ServerConfiguration* foo5 = new ServerConfiguration();
+	User* foo6 = new User();
+
   server_sample(argc, argv);
   client_sample();
   return 0;

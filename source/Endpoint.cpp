@@ -1,10 +1,10 @@
 #include "Endpoint.hpp"
 
-Endpoint::Endpoint()
+Endpoint::Endpoint():port(0)
 {
 }
 
-Endpoint::Endpoint(const Endpoint &other)
+Endpoint::Endpoint(const Endpoint &other):port(0)
 {
   (void)other;
 }

@@ -1,10 +1,10 @@
 #include "ServerConfiguration.hpp"
 
-ServerConfiguration::ServerConfiguration()
+ServerConfiguration::ServerConfiguration():port(0)
 {
 }
 
-ServerConfiguration::ServerConfiguration(const ServerConfiguration &other)
+ServerConfiguration::ServerConfiguration(const ServerConfiguration &other):port(0)
 {
   (void)other;
 }

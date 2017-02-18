@@ -9,6 +9,7 @@ public:
   ServerConfiguration(const ServerConfiguration&);
   ~ServerConfiguration();
   ServerConfiguration &operator=(const ServerConfiguration&);
+  const unsigned short port;
 };
 
 #endif		/* !SERVERCONFIGURATION_HPP_ */
