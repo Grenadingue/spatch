@@ -1,0 +1,33 @@
+[MainController|+ int main(int ac. char **av)]
+
+[ServerController]
+
+[SSHServer]
+
+[SSHClient]
+
+[ConfigurationController|- std::vector〈Users *〉 users;- std::vector〈Endpoint *〉 endpoints|+ const std::vector〈Users *〉 &users();+ const std::vector〈Endpoint *〉 &endpoints()]
+
+[AccessListController|const User *authenticateLocalUser(const std::string &user. const std::string &password)]
+
+[ConfigurationReader|+ const std::string configurationFilePath]
+
+[ServerConfiguration|+ const unsigned short port]
+
+[User|+ const std::string name;+ const std::string password;+ const std::vector〈Endpoint *〉 availableEndpoints]
+
+[Endpoint|+ const std::string ipAddress;+ const unsigned short port;+ const std::map〈User *. std::vector〈std::string〉〉 usersAccessControl]
+
+
+[MainController]1->1[ServerController]
+[ServerController]1->1[AccessListController]
+[AccessListController]1->1[ConfigurationController]
+[ServerController]-^[SSHServer]
+[SSHServer]1->0..*[SSHClient]
+
+[MainController]1->1[ConfigurationController]
+[ConfigurationController]1->1[ConfigurationReader]
+[ConfigurationController]1->1[ServerConfiguration]
+[ConfigurationController]1->0..*[User]
+[ConfigurationController]1->0..*[Endpoint]
+
