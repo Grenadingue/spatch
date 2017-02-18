@@ -8,7 +8,7 @@
 
 [ConfigurationController|- std::vector〈Users *〉 users;- std::vector〈Endpoint *〉 endpoints|+ const std::vector〈Users *〉 &users();+ const std::vector〈Endpoint *〉 &endpoints()]
 
-[AccessListController|const User *authenticateLocalUser(const std::string &user. const std::string &password)]
+[AccessListController|+ const User *authenticateLocalUser(const std::string &user. const std::string &password);+ const std::vector〈Endpoint *〉 &getAvailableEndpointsForUser(const User &);+ const std::vector〈std::string〉&getAvailableRemoteUsernamesForUserAtEndpoint(const User &. const Endpoint &)]
 
 [ConfigurationReader|+ const std::string configurationFilePath]
 
@@ -30,4 +30,3 @@
 [ConfigurationController]1->1[ServerConfiguration]
 [ConfigurationController]1->0..*[User]
 [ConfigurationController]1->0..*[Endpoint]
-
