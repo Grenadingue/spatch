@@ -553,21 +553,21 @@ int client_sample()
 }
 
 int main(int argc, char **argv){
-
 	std::vector<User *> tata;
-	tata[NULL] = {NULL};
+	tata = {NULL};
 
 	std::vector<Endpoint *> tutu;
-	tutu[NULL] = {NULL};
+	tutu = {NULL};
 
 	std::map<User *, std::vector<std::string>> toto;
 	toto[NULL] = {""};
 
 	std::vector<Endpoint *> titi;
-	titi[NULL] = {NULL};
+	titi = {NULL};
 
 	AccessListController* foo1 = new AccessListController();
-	ConfigurationReader* foo2 = new ConfigurationReader("toto");
+	ConfigurationReader* foo2 = new ConfigurationReader("./config/spatch/config.ini");
+	foo2->getDatas();
 	ConfigurationController* foo3 = new ConfigurationController(tata, tutu);
 	Endpoint* foo4 = new Endpoint((std::string)"toto", 42, toto);
 	ServerConfiguration* foo5 = new ServerConfiguration(42);
