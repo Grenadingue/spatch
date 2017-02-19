@@ -5,10 +5,8 @@ class ServerConfiguration
 {
 
 public:
-  ServerConfiguration();
-  ServerConfiguration(const ServerConfiguration&);
+  ServerConfiguration(unsigned short _port);
   ~ServerConfiguration();
-  ServerConfiguration &operator=(const ServerConfiguration&);
   const unsigned short port;
 };
 

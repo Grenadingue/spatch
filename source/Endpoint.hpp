@@ -11,10 +11,8 @@ class Endpoint
 {
 
 public:
-  Endpoint();
-  Endpoint(const Endpoint&);
+  Endpoint(std::string _ipAdress, unsigned short _port, std::map<User *, std::vector<std::string>> _usersAccessControl);
   ~Endpoint();
-  Endpoint &operator=(const Endpoint&);
   const std::string ipAdress;
   const unsigned short port;
   const std::map<User *, std::vector<std::string>> usersAccessControl;

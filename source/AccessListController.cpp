@@ -4,17 +4,18 @@ AccessListController::AccessListController()
 {
 }
 
-AccessListController::AccessListController(const AccessListController &other)
-{
-  (void)other;
-}
-
 AccessListController::~AccessListController()
 {
 }
 
-AccessListController &AccessListController::operator=(const AccessListController &other)
+const User *authenticateLocalUser(const std::string &user, const std::string &password)
 {
-  (void)other;
-  return (*this);
+}
+
+const std::vector<Endpoint *> &getAvailableEndpointsForUser(const User &)
+{
+}
+
+const std::vector<std::string> &getAvailableRemoteUsernamesForUserAtEndpoint(const User &, const Endpoint &)
+{
 }

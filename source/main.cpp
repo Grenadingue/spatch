@@ -553,12 +553,25 @@ int client_sample()
 }
 
 int main(int argc, char **argv){
+
+	std::vector<User *> tata;
+	tata[NULL] = {NULL};
+
+	std::vector<Endpoint *> tutu;
+	tutu[NULL] = {NULL};
+
+	std::map<User *, std::vector<std::string>> toto;
+	toto[NULL] = {""};
+
+	std::vector<Endpoint *> titi;
+	titi[NULL] = {NULL};
+
 	AccessListController* foo1 = new AccessListController();
-	ConfigurationReader* foo2 = new ConfigurationReader();
-	ConfigurationController* foo3 = new ConfigurationController();
-	Endpoint* foo4 = new Endpoint();
-	ServerConfiguration* foo5 = new ServerConfiguration();
-	User* foo6 = new User();
+	ConfigurationReader* foo2 = new ConfigurationReader("toto");
+	ConfigurationController* foo3 = new ConfigurationController(tata, tutu);
+	Endpoint* foo4 = new Endpoint((std::string)"toto", 42, toto);
+	ServerConfiguration* foo5 = new ServerConfiguration(42);
+	User* foo6 = new User("toto", "toto", titi);
 
   server_sample(argc, argv);
   client_sample();

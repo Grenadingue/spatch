@@ -10,10 +10,8 @@ class User
 {
 
 public:
-  User();
-  User(const User&);
+  User(std::string _name, std::string _password, std::vector<Endpoint *> _availableEndpoints);
   ~User();
-  User &operator=(const User&);
   const std::string name;
   const std::string password;
   const std::vector<Endpoint *> availableEndpoints;

@@ -7,10 +7,8 @@ class ConfigurationReader
 {
 
 public:
-  ConfigurationReader();
-  ConfigurationReader(const ConfigurationReader&);
+  ConfigurationReader(std::string _configurationFilePath);
   ~ConfigurationReader();
-  ConfigurationReader &operator=(const ConfigurationReader&);
   const std::string configurationFilePath;
 };
 

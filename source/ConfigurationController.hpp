@@ -13,10 +13,8 @@ private:
   std::vector<User *> _users;
   std::vector<Endpoint *> _endpoints;
 public:
-  ConfigurationController();
-  ConfigurationController(const ConfigurationController&);
+  ConfigurationController(std::vector<User *> _users, std::vector<Endpoint *> _endpoints);
   ~ConfigurationController();
-  ConfigurationController &operator=(const ConfigurationController&);
   const std::vector<User *> &users();
   const std::vector<Endpoint *> &endpoints();
 };

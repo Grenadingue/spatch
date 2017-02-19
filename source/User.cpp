@@ -1,20 +1,10 @@
 #include "User.hpp"
 
-User::User()
+User::User(std::string _name, std::string _password, std::vector<Endpoint *> _availableEndpoints)
+  : name(_name), password(_password), availableEndpoints(_availableEndpoints)
 {
-}
-
-User::User(const User &other)
-{
-  (void)other;
 }
 
 User::~User()
 {
-}
-
-User &User::operator=(const User &other)
-{
-  (void)other;
-  return (*this);
 }

@@ -1,20 +1,9 @@
 #include "ConfigurationReader.hpp"
 
-ConfigurationReader::ConfigurationReader()
+ConfigurationReader::ConfigurationReader(std::string _configurationFilePath):configurationFilePath(_configurationFilePath)
 {
-}
-
-ConfigurationReader::ConfigurationReader(const ConfigurationReader &other)
-{
-  (void)other;
 }
 
 ConfigurationReader::~ConfigurationReader()
 {
-}
-
-ConfigurationReader &ConfigurationReader::operator=(const ConfigurationReader &other)
-{
-  (void)other;
-  return (*this);
 }

@@ -1,20 +1,18 @@
 #include "ConfigurationController.hpp"
 
-ConfigurationController::ConfigurationController()
+ConfigurationController::ConfigurationController(std::vector<User *> users, std::vector<Endpoint *> endpoints)
+  : _users(users), _endpoints(endpoints)
 {
-}
-
-ConfigurationController::ConfigurationController(const ConfigurationController &other)
-{
-  (void)other;
 }
 
 ConfigurationController::~ConfigurationController()
 {
 }
 
-ConfigurationController &ConfigurationController::operator=(const ConfigurationController &other)
+const std::vector<User *> &users()
 {
-  (void)other;
-  return (*this);
+}
+
+const std::vector<Endpoint *> &endpoints()
+{
 }
