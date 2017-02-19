@@ -11,4 +11,8 @@ set(PROJECT_F ${CMAKE_CURRENT_SOURCE_DIR}/source)
 project (spatch)
 
 add_executable (spatch ${PROJECT_F}/main.cpp)
-target_link_libraries (spatch ssh argp)
+target_link_libraries (spatch ssh)
+
+if (WIN32)
+  target_link_libraries (spatch argp)
+endif ()
