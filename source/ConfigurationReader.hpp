@@ -14,12 +14,12 @@ class ConfigurationReader
 private:
   std::ifstream _infile;
   std::string epurLine(std::string);
-  std::vector <std::pair <std::string, std::string>> getLineDatas(std::string);
+  std::pair <std::string, std::string> getLineDatas(std::string);
 
 public:
   ConfigurationReader(std::string _configurationFilePath);
   ~ConfigurationReader();
-  getDatas();
+  std::map <std::string, std::vector <std::pair <std::string, std::string>>> getDatas();
 };
 
 #endif		/* !CONFIGURATIONREADER_HPP_ */

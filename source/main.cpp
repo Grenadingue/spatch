@@ -566,14 +566,18 @@ int main(int argc, char **argv){
 	titi = {NULL};
 
 	AccessListController* foo1 = new AccessListController();
+
+	// ConfigurationReader test
+	std::map <std::string, std::vector <std::pair <std::string, std::string>>> datas;
 	ConfigurationReader* foo2 = new ConfigurationReader("./config/spatch/config.ini");
-	foo2->getDatas();
+	datas = foo2->getDatas();
+
 	ConfigurationController* foo3 = new ConfigurationController(tata, tutu);
 	Endpoint* foo4 = new Endpoint((std::string)"toto", 42, toto);
 	ServerConfiguration* foo5 = new ServerConfiguration(42);
 	User* foo6 = new User("toto", "toto", titi);
 
-  server_sample(argc, argv);
-  client_sample();
+  // server_sample(argc, argv);
+  // client_sample();
   return 0;
 }
