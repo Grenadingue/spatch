@@ -34,15 +34,6 @@ std::map <std::string, std::vector <std::pair <std::string, std::string>>> Confi
       }
     }
   }
-
-  // Segfault on last iteration
-
-  // for (auto const &it : datas) {
-  //   std::cout << '[' << it.first << ']' << std::endl;
-  //   for (auto const &it2 : it.second) {
-  //     std::cout << "keys : " << it2.first << " values : " << it2.second << std::endl;
-  //   }
-  // }
   return (datas);
 }
 

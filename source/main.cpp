@@ -9,7 +9,6 @@
 
 #include "AccessListController.hpp"
 #include "ConfigurationController.hpp"
-#include "ConfigurationReader.hpp"
 #include "Endpoint.hpp"
 #include "ServerConfiguration.hpp"
 #include "User.hpp"
@@ -559,23 +558,18 @@ int main(int argc, char **argv){
 	std::vector<Endpoint *> tutu;
 	tutu = {NULL};
 
-	std::map<User *, std::vector<std::string>> toto;
-	toto[NULL] = {""};
-
-	std::vector<Endpoint *> titi;
-	titi = {NULL};
+	// std::map<User *, std::vector<std::string>> toto;
+	// toto[NULL] = {""};
+	//
+	// std::vector<Endpoint *> titi;
+	// titi = {NULL};
 
 	AccessListController* foo1 = new AccessListController();
 
-	// ConfigurationReader test
-	std::map <std::string, std::vector <std::pair <std::string, std::string>>> datas;
-	ConfigurationReader* foo2 = new ConfigurationReader("./config/spatch/config.ini");
-	datas = foo2->getDatas();
-
 	ConfigurationController* foo3 = new ConfigurationController(tata, tutu);
-	Endpoint* foo4 = new Endpoint((std::string)"toto", 42, toto);
+	// Endpoint* foo4 = new Endpoint((std::string)"toto", 42, toto);
 	ServerConfiguration* foo5 = new ServerConfiguration(42);
-	User* foo6 = new User("toto", "toto", titi);
+	// User* foo6 = new User("toto", "toto", titi);
 
   // server_sample(argc, argv);
   // client_sample();
