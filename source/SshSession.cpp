@@ -6,8 +6,8 @@
 
 const std::string SshSession::_keysFolder = "/etc/ssh/";
 
-SshSession::SshSession(const std::string &bindAddr, const std::string &bindPort)
-    : _bindAddr(bindAddr), _bindPort(bindPort)
+SshSession::SshSession(const AccessListController &acl, SshProxy &proxy, const std::string &bindAddr, const std::string &bindPort)
+    : _acl(acl), _proxy(proxy), _bindAddr(bindAddr), _bindPort(bindPort)
 {
 }
 
@@ -103,7 +103,8 @@ void SshSession::_fork()
         ssh_bind_free(_sshBind); // Remove socket binding, which allows us to restart the parent process, without terminating existing sessions
         if ((_event = ssh_event_new()))
         {
-            SshChannel::init(_event, _session); // Blocks until the SSH session ends by either child process exiting, or client disconnecting
+            // Blocks until the SSH session ends by either child process exiting, or client disconnecting
+            SshChannel channel(_acl, _proxy, _event, _session);
             ssh_event_free(_event);
         }
         else

@@ -1,10 +1,9 @@
-#include "SshSession.hpp"
+#include "ServerController.hpp"
 
 int main(int ac, char **av)
 {
-  SshSession session("localhost", "42010");
+  void *config = NULL;
+  ServerController server(config);
 
-  session.init();
-  session.handleNewSessions();
-  return 0;
+  return server.run();
 }

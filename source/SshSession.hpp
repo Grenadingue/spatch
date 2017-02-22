@@ -5,12 +5,16 @@
 # include <signal.h>
 # include <iostream>
 # include <string>
+# include "AccessListController.hpp"
+# include "SshProxy.hpp"
 
 class SshSession
 {
 private:
     static const std::string _keysFolder;
 
+    const AccessListController &_acl;
+    SshProxy &_proxy;
     const std::string _bindAddr;
     const std::string _bindPort;
 
@@ -21,7 +25,7 @@ private:
     ssh_event _event;
 
 public:
-    SshSession(const std::string &bindAddr, const std::string &bindPort);
+    SshSession(const AccessListController &acl, SshProxy &proxy, const std::string &bindAddr, const std::string &bindPort);
     ~SshSession();
 
     int init();

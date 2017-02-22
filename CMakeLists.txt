@@ -12,6 +12,8 @@ project (spatch)
 
 add_executable (spatch
   ${PROJECT_F}/main.cpp
+  ${PROJECT_F}/ServerController.cpp
+  ${PROJECT_F}/SshProxy.cpp
   ${PROJECT_F}/SshSession.cpp
   ${PROJECT_F}/SshChannel.cpp
   ${PROJECT_F}/PseudoTerminal.cpp
