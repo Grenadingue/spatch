@@ -32,6 +32,7 @@ sample_ssh_client
 # Debug files
 *.dSYM/
 *.su
+*.pcap
 
 # CMake build directory
 build
