@@ -10,11 +10,11 @@ class User
 {
 
 public:
-  User(std::string _name, std::string _password, std::vector<Endpoint *> _availableEndpoints);
+  User(std::string _name, std::string _password);
   ~User();
   const std::string name;
   const std::string password;
-  const std::vector<Endpoint *> availableEndpoints;
+  std::vector<Endpoint *> availableEndpoints;
 };
 
 #endif		/* !USER_HPP_ */

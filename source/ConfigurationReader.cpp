@@ -45,7 +45,6 @@ std::string ConfigurationReader::epurLine(std::string line) {
       epuredLine.push_back(line[i]);
     }
   }
-  epuredLine.push_back('\0');
   return (epuredLine);
 }
 

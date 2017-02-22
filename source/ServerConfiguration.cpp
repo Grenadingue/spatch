@@ -1,6 +1,6 @@
 #include "ServerConfiguration.hpp"
 
-ServerConfiguration::ServerConfiguration(unsigned short _port)
+ServerConfiguration::ServerConfiguration(std::string _port)
   : port(_port)
 {
 }

@@ -567,11 +567,18 @@ int main(int argc, char **argv){
 	AccessListController* foo1 = new AccessListController();
 
 	ConfigurationController* foo3 = new ConfigurationController(tata, tutu);
+	if (foo3->init() == -1) {
+		delete foo1;
+		delete foo3;
+		return (-1);
+	}
 	// Endpoint* foo4 = new Endpoint((std::string)"toto", 42, toto);
-	ServerConfiguration* foo5 = new ServerConfiguration(42);
+	// ServerConfiguration* foo5 = new ServerConfiguration(42);
 	// User* foo6 = new User("toto", "toto", titi);
 
   // server_sample(argc, argv);
   // client_sample();
-  return 0;
+	delete foo1;
+	delete foo3;
+  return (0);
 }

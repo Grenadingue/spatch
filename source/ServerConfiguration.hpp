@@ -1,13 +1,15 @@
 #ifndef		SERVERCONFIGURATION_HPP_
 # define	SERVERCONFIGURATION_HPP_
 
+#include <string>
+
 class ServerConfiguration
 {
 
 public:
-  ServerConfiguration(unsigned short _port);
+  ServerConfiguration(std::string _port);
   ~ServerConfiguration();
-  const unsigned short port;
+  const std::string port;
 };
 
 #endif		/* !SERVERCONFIGURATION_HPP_ */
