@@ -16,6 +16,8 @@ else ()
   message(FATAL_ERROR "Compiler ${CMAKE_CXX_COMPILER} has no C++11 support.")
 endif ()
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb")
+
 # Set project directory
 set(PROJECT_F ${CMAKE_CURRENT_SOURCE_DIR}/source)
 
@@ -31,6 +33,7 @@ add_executable (spatch
   ${PROJECT_F}/SshProxy.cpp
   ${PROJECT_F}/SshSession.cpp
   ${PROJECT_F}/SshChannel.cpp
+  ${PROJECT_F}/SshClient.cpp
   ${PROJECT_F}/PseudoTerminal.cpp
 )
 
