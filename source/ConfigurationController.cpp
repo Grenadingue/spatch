@@ -116,7 +116,9 @@ void ConfigurationController::getUsersControl(std::vector <std::pair <std::strin
     for (auto const &it : this->getKeysAndValues(pairs)) {
         int i = 0;
         for (; i < this->_users.size() && this->_users[i]->name != it.first; i++);
-        this->_users[i]->availableEndpoints = this->getAvailableEndpoints(it.second);
+        if (i <= this->_users.size() - 1) {
+            this->_users[i]->availableEndpoints = this->getAvailableEndpoints(it.second);
+        }
     }
 }
 
@@ -158,7 +160,7 @@ void ConfigurationController::getRemoteUsers(std::vector <std::pair <std::string
         int j = 0;
         for (; j < this->_users.size() && this->_users[j]->name != localUsername; j++);
         if ((i <= this->_endpoints.size() - 1) && (j <= this->_users.size() - 1)) {
-            this->_endpoints[i]->usersAccessControl[this->_users[j]] = this->getAvailableUsernames(it.second)
+            this->_endpoints[i]->usersAccessControl[this->_users[j]] = this->getAvailableUsernames(it.second);
         }
         // std::cout << "localUsername : " << localUsername << " endpointName : " << endpointName << std::endl;
     }
