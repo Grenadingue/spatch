@@ -2,16 +2,17 @@
 #include <iostream>
 #include <string>
 #include "SshProxy.hpp"
+#include "SshClient.hpp"
 #include "Endpoint.hpp"
 
-const std::vector<std::pair<std::string, unsigned int> > SshProxy::_shellCommands =
+const std::vector<std::string> SshProxy::_shellCommands =
 {
-    { "list", 0 },
-    { "endpoint", 1 },
-    { "alias", 1 },
-    { "connect", 0 },
-    { "help", 0 },
-    { "exit", 0 },
+    "list",
+    "endpoint",
+    "alias",
+    "connect",
+    "help",
+    "exit",
 };
 
 SshProxy::SshProxy(const AccessListController &acl)
@@ -73,21 +74,21 @@ bool SshProxy::_dispatchCommand(const User &user, Endpoint *&endpoint, std::stri
 {
     if (tokens.size() != 0)
     {
-        for (std::pair<std::string, unsigned int> command : _shellCommands)
+        for (std::string command : _shellCommands)
         {
-            if (tokens[0] == command.first)
+            if (tokens[0] == command)
             {
-                if (command.first == "list")
+                if (command == "list")
                     return _listCommand(user, tokens);
-                else if (command.first == "endpoint")
-                    return _endpointCommand(user, endpoint, tokens);
-                else if (command.first == "alias")
+                else if (command == "endpoint")
+                    return _endpointCommand(user, endpoint, alias, tokens);
+                else if (command == "alias")
                     return _aliasCommand(user, endpoint, alias, tokens);
-                else if (command.first == "connect")
+                else if (command == "connect")
                     return _connectCommand(user, endpoint, alias, tokens, cmd);
-                else if (command.first == "help")
+                else if (command == "help")
                     return _helpCommand(tokens);
-                else if (command.first == "exit")
+                else if (command == "exit")
                     return _exitCommand(tokens);
             }
         }
@@ -102,7 +103,7 @@ bool SshProxy::_listCommand(const User &user, const std::vector<std::string> tok
     return false;
 }
 
-bool SshProxy::_endpointCommand(const User &user, Endpoint *&endpoint, const std::vector<std::string> tokens)
+bool SshProxy::_endpointCommand(const User &user, Endpoint *&endpoint, std::string &alias, const std::vector<std::string> tokens)
 {
     const std::vector<Endpoint *> availableEndpoints = _acl.getAvailableEndpointsForUser(user);
     bool found = false;
@@ -125,6 +126,7 @@ bool SshProxy::_endpointCommand(const User &user, Endpoint *&endpoint, const std
             if (tokens[1] == availableEndpoint->name)
             {
                 endpoint = availableEndpoint;
+                alias = "";
                 found = true;
             }
         }
@@ -157,7 +159,16 @@ bool SshProxy::_aliasCommand(const User &user, Endpoint *&endpoint, std::string 
     }
     else if (tokens.size() == 2)
     {
-        std::cout << "alias : not implemented" << std::endl;
+        for (auto availableAlias : availableAliases)
+        {
+            if (tokens[1] == availableAlias)
+            {
+                alias = availableAlias;
+                found = true;
+            }
+        }
+        if (!found)
+            std::cout << "alias : '" << tokens[1] << "' not found for endpoint '" << endpoint->name << "'" << std::endl;
     }
     else
         std::cout << "alias : too many arguments" << std::endl;
@@ -167,6 +178,8 @@ bool SshProxy::_aliasCommand(const User &user, Endpoint *&endpoint, std::string 
 
 bool SshProxy::_connectCommand(const User &user, Endpoint *&endpoint, std::string &alias, const std::vector<std::string> tokens, const char *command)
 {
+    SshClient client(*endpoint, alias, command);
+
     std::cout << "Inside _connectCommand()" << std::endl << std::endl;
     if (command)
         execl("/bin/sh", "sh", "-c", command, NULL);

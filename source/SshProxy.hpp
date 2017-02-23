@@ -9,7 +9,7 @@
 class SshProxy
 {
 private:
-    static const std::vector<std::pair<std::string, unsigned int> > _shellCommands;
+    static const std::vector<std::string> _shellCommands;
 
     const AccessListController &_acl;
 
@@ -23,7 +23,7 @@ public:
 private:
     bool _dispatchCommand(const User &user, Endpoint *&endpoint, std::string &alias, const std::vector<std::string> tokens, const char *command);
     bool _listCommand(const User &user, const std::vector<std::string> tokens);
-    bool _endpointCommand(const User &user, Endpoint *&endpoint, const std::vector<std::string> tokens);
+    bool _endpointCommand(const User &user, Endpoint *&endpoint, std::string &alias, const std::vector<std::string> tokens);
     bool _aliasCommand(const User &user, Endpoint *&endpoint, std::string &alias, const std::vector<std::string> tokens);
     bool _connectCommand(const User &user, Endpoint *&endpoint, std::string &alias, const std::vector<std::string> tokens, const char *command);
     bool _helpCommand(const std::vector<std::string> tokens);
