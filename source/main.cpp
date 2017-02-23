@@ -552,11 +552,11 @@ int client_sample()
 }
 
 int main(int argc, char **argv){
-	std::vector<User *> tata;
-	tata = {NULL};
-
-	std::vector<Endpoint *> tutu;
-	tutu = {NULL};
+	// std::vector<User *> tata;
+	// tata = {NULL};
+	//
+	// std::vector<Endpoint *> tutu;
+	// tutu = {NULL};
 
 	// std::map<User *, std::vector<std::string>> toto;
 	// toto[NULL] = {""};
@@ -564,16 +564,17 @@ int main(int argc, char **argv){
 	// std::vector<Endpoint *> titi;
 	// titi = {NULL};
 
-	AccessListController* foo1 = new AccessListController();
+	// ServerConfiguration foo5 = new ServerConfiguration("42");
 
-	ConfigurationController* foo3 = new ConfigurationController(tata, tutu);
+	ConfigurationController* foo3 = new ConfigurationController();
 	if (foo3->init() == -1) {
-		delete foo1;
 		delete foo3;
 		return (-1);
 	}
+
+	AccessListController* foo1 = new AccessListController(foo3);
+
 	// Endpoint* foo4 = new Endpoint((std::string)"toto", 42, toto);
-	// ServerConfiguration* foo5 = new ServerConfiguration(42);
 	// User* foo6 = new User("toto", "toto", titi);
 
   // server_sample(argc, argv);

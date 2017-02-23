@@ -6,16 +6,20 @@
 
 class User;
 class Endpoint;
+class ConfigurationController;
 
 class AccessListController
 {
 
+private:
+    ConfigurationController *_configurationController;
+
 public:
-  AccessListController();
-  ~AccessListController();
-  const User *authenticateLocalUser(const std::string &user, const std::string &password);
-  const std::vector<Endpoint *> &getAvailableEndpointsForUser(const User &);
-  const std::vector<std::string> &getAvailableRemoteUsernamesForUserAtEndpoint(const User &, const Endpoint &);
+    AccessListController(ConfigurationController *configurationController);
+    ~AccessListController();
+    const User *authenticateLocalUser(const std::string &user, const std::string &password);
+    const std::vector<Endpoint *> getAvailableEndpointsForUser(const User &user);
+    const std::vector<std::string> getAvailableRemoteUsernamesForUserAtEndpoint(const User &user, const Endpoint &endpoint);
 };
 
 #endif		/* !ACCESSLISTCONTROLLER_HPP_ */
