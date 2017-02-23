@@ -157,8 +157,10 @@ void ConfigurationController::getRemoteUsers(std::vector <std::pair <std::string
         for (; i < this->_endpoints.size() && this->_endpoints[i]->name != endpointName; i++);
         int j = 0;
         for (; j < this->_users.size() && this->_users[j]->name != localUsername; j++);
+        if ((i <= this->_endpoints.size() - 1) && (j <= this->_users.size() - 1)) {
+            this->_endpoints[i]->usersAccessControl[this->_users[j]] = this->getAvailableUsernames(it.second)
+        }
         // std::cout << "localUsername : " << localUsername << " endpointName : " << endpointName << std::endl;
-        this->_endpoints[i]->usersAccessControl[this->_users[j]] = this->getAvailableUsernames(it.second);
     }
 }
 
