@@ -19,7 +19,7 @@ public:
     ~AccessListController();
     const User *authenticateLocalUser(const std::string &user, const std::string &password);
     const std::vector<Endpoint *> getAvailableEndpointsForUser(const User &user);
-    const std::vector<std::string> getAvailableRemoteUsernamesForUserAtEndpoint(const User &user, const Endpoint &endpoint);
+    const std::vector<std::string> getAvailableRemoteUsernamesForUserAtEndpoint(User &user, const Endpoint &endpoint);
 };
 
 #endif		/* !ACCESSLISTCONTROLLER_HPP_ */

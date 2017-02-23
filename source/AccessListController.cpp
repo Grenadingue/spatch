@@ -32,15 +32,14 @@ const std::vector<Endpoint *> AccessListController::getAvailableEndpointsForUser
     return (std::vector<Endpoint *>());
 }
 
-const std::vector<std::string> AccessListController::getAvailableRemoteUsernamesForUserAtEndpoint(const User &user, const Endpoint &endpoint)
+const std::vector<std::string> AccessListController::getAvailableRemoteUsernamesForUserAtEndpoint(User &user, const Endpoint &endpoint)
 {
-    // for (auto const &it : this->_configurationController->endpoints()) {
-    //     if (it->name == endpoint.name) {
-    //             if (it->usersAccessControl[it2->name] == user.name) {
-    //                 return (it);
-    //             }
-    //         }
-    //     }
-    // }
+    for (auto const &it : this->_configurationController->endpoints()) {
+        if (it->name == endpoint.name) {
+            if (it->usersAccessControl.find(&user) != it->usersAccessControl.end()) {
+               return (it->usersAccessControl[&user]);
+           }
+        }
+    }
     return (std::vector<std::string>());
 }
