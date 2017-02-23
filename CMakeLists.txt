@@ -21,6 +21,12 @@ set(PROJECT_F ${CMAKE_CURRENT_SOURCE_DIR}/source)
 
 add_executable (spatch
   ${PROJECT_F}/main.cpp
+  ${PROJECT_F}/AccessListController.cpp
+  ${PROJECT_F}/ConfigurationController.cpp
+  ${PROJECT_F}/ConfigurationReader.cpp
+  ${PROJECT_F}/ServerConfiguration.cpp
+  ${PROJECT_F}/Endpoint.cpp
+  ${PROJECT_F}/User.cpp
   ${PROJECT_F}/ServerController.cpp
   ${PROJECT_F}/SshProxy.cpp
   ${PROJECT_F}/SshSession.cpp
