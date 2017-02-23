@@ -12,10 +12,13 @@
 
 [AccessListController|+ const User *authenticateLocalUser(const std::string &user. const std::string &password);+ const std::vector〈Endpoint *〉 getAvailableEndpointsForUser(const User &user);+ const std::vector〈std::string〉 getAvailableRemoteUsernamesForUserAtEndpoint(User &user. const Endpoint &endpoint);]
 
+[ConfigurationReader|+ const std::string configurationFilePath;+ std::map 〈std::string. std::vector 〈std::pair 〈std::string. std::string〉〉〉 getDatas();]
 
 [ServerConfiguration|+ const std::string port;]
 
+[User|+ const std::string name;+ const std::string password;+ std::vector〈Endpoint *〉 availableEndpoints;]
 
+[Endpoint|+ const std::string name;+ const std::string ipAddress;+ const std::string port;+ std::map〈User *. std::vector〈std::string〉〉 usersAccessControl;]
 
 [MainController]1->1[ServerController]
 [ServerController]1->1[AccessListController]
