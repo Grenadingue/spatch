@@ -3,12 +3,13 @@
 #include <iostream>
 #include <string>
 
-const std::vector<std::string> SshProxy::_shellCommands =
+const std::vector<std::pair<std::string, unsigned int> > SshProxy::_shellCommands =
 {
-    "list",
-    "endpoint",
-    "alias",
-    "exit",
+    { "list", 0 },
+    { "endpoint", 1 },
+    { "alias", 1 },
+    { "help", 0 },
+    { "exit", 0 },
 };
 
 SshProxy::SshProxy(const AccessListController &acl)

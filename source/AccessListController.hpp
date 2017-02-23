@@ -45,7 +45,7 @@ private:
   User *_user = new User("foo", "bar", std::vector<Endpoint *>({ NULL, NULL }));
 
 public:
-  AccessListController()
+  AccessListController(void *config)
   {
   }
 

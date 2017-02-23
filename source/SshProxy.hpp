@@ -3,13 +3,14 @@
 
 # include <vector>
 # include <string>
+# include <utility>
 # include "AccessListController.hpp"
 // # include "User.hpp"
 
 class SshProxy
 {
 private:
-    static const std::vector<std::string> _shellCommands;
+    static const std::vector<std::pair<std::string, unsigned int> > _shellCommands;
 
     const AccessListController &_acl;
 
