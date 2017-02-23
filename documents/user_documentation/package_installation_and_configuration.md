@@ -21,22 +21,18 @@ You can specify some configuration by sections like :
 port=42
 
 [local_users]
-# username=password
 toto=toto
 ...
 
 [endpoints]
-# endpoint_name=ip_address|port
 endpoint1=10.0.2.15|22
 ...
 
 [users_control]
-# local_username=available_endpoint_1|available_endpoint_2|...
 toto=endpoint1|endpoint2
 ...
 
 [remote_users]
-# local_username|endpoint_name=available_username_1|available_username_2|...
 toto|endpoint1=toto|root
 ...
 ```
