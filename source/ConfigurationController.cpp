@@ -54,6 +54,7 @@ const int ConfigurationController::init()
         }
     }
     delete foo2;
+    return 0;
 }
 
 const std::vector<User *> &ConfigurationController::users()
@@ -134,7 +135,7 @@ std::vector<Endpoint *> ConfigurationController::getAvailableEndpoints(std::stri
         pos = values.find(delimiter);
         value = values.substr(0, pos);
         if (value[0] != '\0' && value != "\n" && value != "\r") {
-          for (int i = 0; this->_endpoints[i]; i++) {
+          for (int i = 0; i != this->_endpoints.size(); i++) {
             if (this->_endpoints[i]->name == value) {
               availableEndpoints.push_back(this->_endpoints[i]);
             }
