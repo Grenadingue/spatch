@@ -5,13 +5,12 @@
 * make
 * gcc
 * g++
-* libargp
 * libssh
 * openssh
 
 ### Then enter these command lines :
 1. `make` or `make re`
-2. `./build/spatch.exe`
+2. `./build/spatch`
 
 > You can remove compiled files with `make clean`.
 
