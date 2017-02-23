@@ -117,7 +117,7 @@ void ConfigurationController::getUsersControl(std::vector <std::pair <std::strin
 {
     for (auto const &it : this->getKeysAndValues(pairs)) {
         int i = 0;
-        for (; this->_users[i] && this->_users[i]->name != it.first; i++);
+        for (; i < this->_users.size() && this->_users[i]->name != it.first; i++);
         this->_users[i]->availableEndpoints = this->getAvailableEndpoints(it.second);
     }
 }
@@ -136,7 +136,7 @@ std::vector<Endpoint *> ConfigurationController::getAvailableEndpoints(std::stri
         pos = values.find(delimiter);
         value = values.substr(0, pos);
         if (value[0] != '\0' && value != "\n" && value != "\r") {
-          for (int i = 0; i != this->_endpoints.size(); i++) {
+          for (int i = 0; i < this->_endpoints.size(); i++) {
             if (this->_endpoints[i]->name == value) {
               availableEndpoints.push_back(this->_endpoints[i]);
             }
@@ -156,9 +156,9 @@ void ConfigurationController::getRemoteUsers(std::vector <std::pair <std::string
         localUsername = this->getLocalUsername(it.first);
         endpointName = this->getEndpointName(it.first);
         int i = 0;
-        for (; this->_endpoints[i] && this->_endpoints[i]->name != endpointName; i++);
+        for (; i < this->_endpoints.size() && this->_endpoints[i]->name != endpointName; i++);
         int j = 0;
-        for (; this->_users[j] && this->_users[j]->name != localUsername; j++);
+        for (; j < this->_users.size() && this->_users[j]->name != localUsername; j++);
         // std::cout << "localUsername : " << localUsername << " endpointName : " << endpointName << std::endl;
         this->_endpoints[i]->usersAccessControl[this->_users[j]] = this->getAvailableUsernames(it.second);
     }

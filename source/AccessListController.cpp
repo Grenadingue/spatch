@@ -34,13 +34,12 @@ const std::vector<Endpoint *> AccessListController::getAvailableEndpointsForUser
 
 const std::vector<std::string> AccessListController::getAvailableRemoteUsernamesForUserAtEndpoint(const User &user, const Endpoint &endpoint) const
 {
-    // for (auto const &it : this->_configurationController->endpoints()) {
-    //     if (it->name == endpoint.name) {
-    //             if (it->usersAccessControl[it2->name] == user.name) {
-    //                 return (it);
-    //             }
-    //         }
-    //     }
-    // }
+    for (auto it : user.availableEndpoints) {
+        if (it->name == endpoint.name) {
+            if ((it->usersAccessControl).find((User *)&user) != it->usersAccessControl.end()) {
+               return (it->usersAccessControl.at((User *)&user));
+           }
+        }
+    }
     return (std::vector<std::string>());
 }
