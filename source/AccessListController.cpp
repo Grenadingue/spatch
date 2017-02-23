@@ -12,7 +12,7 @@ AccessListController::~AccessListController()
 {
 }
 
-const User *AccessListController::authenticateLocalUser(const std::string &user, const std::string &password)
+const User *AccessListController::authenticateLocalUser(const std::string &user, const std::string &password) const
 {
     for (auto const &it : this->_configurationController->users()) {
         if (it->name == user && it->password == password) {
@@ -22,7 +22,7 @@ const User *AccessListController::authenticateLocalUser(const std::string &user,
     return (NULL);
 }
 
-const std::vector<Endpoint *> AccessListController::getAvailableEndpointsForUser(const User &user)
+const std::vector<Endpoint *> AccessListController::getAvailableEndpointsForUser(const User &user) const
 {
     for (auto const &it : this->_configurationController->users()) {
         if (it->name == user.name && it->password == user.password) {
@@ -32,7 +32,7 @@ const std::vector<Endpoint *> AccessListController::getAvailableEndpointsForUser
     return (std::vector<Endpoint *>());
 }
 
-const std::vector<std::string> AccessListController::getAvailableRemoteUsernamesForUserAtEndpoint(const User &user, const Endpoint &endpoint)
+const std::vector<std::string> AccessListController::getAvailableRemoteUsernamesForUserAtEndpoint(const User &user, const Endpoint &endpoint) const
 {
     // for (auto const &it : this->_configurationController->endpoints()) {
     //     if (it->name == endpoint.name) {

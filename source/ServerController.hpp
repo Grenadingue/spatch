@@ -8,13 +8,13 @@
 class ServerController
 {
 private:
-    void *_config;
+    ConfigurationController *_config;
     AccessListController _acl;
     SshProxy _proxy;
     SshSession _session;
 
 public:
-    ServerController(void *config);
+    ServerController(ConfigurationController *config);
     ~ServerController();
 
     int run();

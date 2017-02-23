@@ -1,7 +1,7 @@
 #include "ServerController.hpp"
 
-ServerController::ServerController(void *config)
-    : _config(config), _acl(_config), _proxy(_acl), _session(_acl, _proxy, "localhost", "42010")
+ServerController::ServerController(ConfigurationController *config)
+    : _config(config), _acl(config), _proxy(_acl), _session(_acl, _proxy, "localhost", "42010")
 {
 }
 
