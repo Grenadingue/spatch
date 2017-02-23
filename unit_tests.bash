@@ -2,5 +2,5 @@
 
 # Unit tests
 
-echo ssh -p 55022 mr-spatch@localhost
-echo ssh -p 55022 mr-spatch@localhost -t "ls -la"
+ssh -p 55022 mr-spatch@localhost
+ssh -p 55022 mr-spatch@localhost -t "ls -la"
