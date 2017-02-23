@@ -8,17 +8,13 @@
 
 [SshProxy]
 
-[ConfigurationController|- std::vector〈Users *〉 users;- std::vector〈Endpoint *〉 endpoints|+ const std::vector〈Users *〉 &users();+ const std::vector〈Endpoint *〉 &endpoints()]
+[ConfigurationController|+ const std::vector〈Users *〉 &users();+ const std::vector〈Endpoint *〉 &endpoints();+ const ServerConfiguration *server();+ const int init();]
 
-[AccessListController|+ const User *authenticateLocalUser(const std::string &user. const std::string &password);+ const std::vector〈Endpoint *〉 &getAvailableEndpointsForUser(const User &);+ const std::vector〈std::string〉&getAvailableRemoteUsernamesForUserAtEndpoint(const User &. const Endpoint &)]
+[AccessListController|+ const User *authenticateLocalUser(const std::string &user. const std::string &password);+ const std::vector〈Endpoint *〉 getAvailableEndpointsForUser(const User &user);+ const std::vector〈std::string〉 getAvailableRemoteUsernamesForUserAtEndpoint(User &user. const Endpoint &endpoint);]
 
-[ConfigurationReader|+ const std::string configurationFilePath]
 
-[ServerConfiguration|+ const unsigned short port]
+[ServerConfiguration|+ const std::string port;]
 
-[User|+ const std::string name;+ const std::string password;+ const std::vector〈Endpoint *〉 availableEndpoints]
-
-[Endpoint|+ const std::string ipAddress;+ const unsigned short port;+ const std::map〈User *. std::vector〈std::string〉〉 usersAccessControl]
 
 
 [MainController]1->1[ServerController]
@@ -43,4 +39,3 @@
 [ConfigurationController]1->1[ServerConfiguration]
 [ConfigurationController]1->0..*[User]
 [ConfigurationController]1->0..*[Endpoint]
-
