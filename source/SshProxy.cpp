@@ -1,13 +1,15 @@
-#include "SshProxy.hpp"
 #include <unistd.h>
 #include <iostream>
 #include <string>
+#include "SshProxy.hpp"
+#include "Endpoint.hpp"
 
 const std::vector<std::pair<std::string, unsigned int> > SshProxy::_shellCommands =
 {
     { "list", 0 },
     { "endpoint", 1 },
     { "alias", 1 },
+    { "connect", 0 },
     { "help", 0 },
     { "exit", 0 },
 };
@@ -23,12 +25,14 @@ SshProxy::~SshProxy()
 
 std::vector<std::string> SshProxy::tokenizeLine(const std::string &line)
 {
-    const std::string delimiter(" ");
+    const std::string delimiter(" "), replace("\t");
     std::vector<std::string> tokens;
     std::string buffer = line;
     std::string token;
     size_t pos = 0;
 
+    while (buffer.find(replace) != std::string::npos)
+        buffer.replace(buffer.find(replace), replace.size(), delimiter);
     while ((pos = buffer.find(delimiter)) != std::string::npos)
     {
         token = buffer.substr(0, pos);
@@ -43,33 +47,148 @@ std::vector<std::string> SshProxy::tokenizeLine(const std::string &line)
 
 void SshProxy::interactiveShell(const User &user, const char *command)
 {
+    Endpoint *selectedEndpoint = NULL;
+    std::string selectedAlias;
     std::string buffer;
     bool end = false;
 
+    std::cout << std::endl << "Type 'help' to display a list of available commands" << std::endl;
     while (!end)
     {
-        std::getline(std::cin, buffer);
-
-        for (std::string token : tokenizeLine(buffer))
-        {
-            std::cout << "token = '" << token << "'" << std::endl;
-        }
-
-        if (buffer == "pass")
-            end = true;
-
         buffer = "";
-    }
 
+        if (selectedEndpoint)
+            std::cout << "# selected endpoint -> '" << selectedEndpoint->name << "'" << std::endl;
+        if (selectedAlias.size() != 0)
+            std::cout << "# selected alias -> '" << selectedAlias << "'" << std::endl;
+        std::cout << "spatch $> ";
 
-    while (buffer != "hello")
-    {
-        std::cout << "say hello" << std::endl;
         std::getline(std::cin, buffer);
+        std::vector<std::string> tokens = tokenizeLine(buffer);
+        end = _dispatchCommand(user, selectedEndpoint, selectedAlias, tokens, command);
     }
+}
 
+bool SshProxy::_dispatchCommand(const User &user, Endpoint *&endpoint, std::string &alias, const std::vector<std::string> tokens, const char *cmd)
+{
+    if (tokens.size() != 0)
+    {
+        for (std::pair<std::string, unsigned int> command : _shellCommands)
+        {
+            if (tokens[0] == command.first)
+            {
+                if (command.first == "list")
+                    return _listCommand(user, tokens);
+                else if (command.first == "endpoint")
+                    return _endpointCommand(user, endpoint, tokens);
+                else if (command.first == "alias")
+                    return _aliasCommand(user, endpoint, alias, tokens);
+                else if (command.first == "connect")
+                    return _connectCommand(user, endpoint, alias, tokens, cmd);
+                else if (command.first == "help")
+                    return _helpCommand(tokens);
+                else if (command.first == "exit")
+                    return _exitCommand(tokens);
+            }
+        }
+        std::cerr << "Unknown command '" << tokens[0] << "'" << std::endl << std::endl;
+    }
+    return false;
+}
+
+bool SshProxy::_listCommand(const User &user, const std::vector<std::string> tokens)
+{
+    std::cout << "Warning: Not implemented" << std::endl;
+    return false;
+}
+
+bool SshProxy::_endpointCommand(const User &user, Endpoint *&endpoint, const std::vector<std::string> tokens)
+{
+    const std::vector<Endpoint *> availableEndpoints = _acl.getAvailableEndpointsForUser(user);
+    bool found = false;
+
+    if (tokens.size() == 1)
+    {
+        std::cout << "Available endpoints:" << std::endl;
+        for (auto availableEndpoint : availableEndpoints)
+        {
+            std::cout << " - " << availableEndpoint->name << std::endl;
+            found = true;
+        }
+        if (!found)
+            std::cout << "endpoint : no available endpoint found" << std::endl;
+    }
+    else if (tokens.size() == 2)
+    {
+        for (auto availableEndpoint : availableEndpoints)
+        {
+            if (tokens[1] == availableEndpoint->name)
+            {
+                endpoint = availableEndpoint;
+                found = true;
+            }
+        }
+        if (!found)
+            std::cout << "endpoint : '" << tokens[1] << "' not found" << std::endl;
+    }
+    else
+        std::cout << "endpoint : too many arguments" << std::endl;
+    std::cout << std::endl;
+    return false;
+}
+
+bool SshProxy::_aliasCommand(const User &user, Endpoint *&endpoint, std::string &alias, const std::vector<std::string> tokens)
+{
+    std::vector<std::string> availableAliases = _acl.getAvailableRemoteUsernamesForUserAtEndpoint(user, *endpoint);
+    bool found = false;
+
+    if (!endpoint)
+        std::cout << "alias : you must select an endpoint before selecting an alias" << std::endl;
+    else if (tokens.size() == 1)
+    {
+        std::cout << "Available aliases (usernames) for endpoint '" << endpoint->name << "' :" << std::endl;
+        for (auto availableAlias : availableAliases)
+        {
+            std::cout << " - " << availableAlias << std::endl;
+            found = true;
+        }
+        if (!found)
+            std::cout << "alias : no available alias(es) found, you will not be able to log in '" << endpoint->name << "'" << std::endl;
+    }
+    else if (tokens.size() == 2)
+    {
+        std::cout << "alias : not implemented" << std::endl;
+    }
+    else
+        std::cout << "alias : too many arguments" << std::endl;
+    std::cout << std::endl;
+    return false;
+}
+
+bool SshProxy::_connectCommand(const User &user, Endpoint *&endpoint, std::string &alias, const std::vector<std::string> tokens, const char *command)
+{
+    std::cout << "Inside _connectCommand()" << std::endl << std::endl;
     if (command)
         execl("/bin/sh", "sh", "-c", command, NULL);
     else
         execl("/bin/sh", "sh", "-l", NULL, NULL);
+    return false;
+}
+
+bool SshProxy::_helpCommand(const std::vector<std::string> tokens)
+{
+    std::cout
+        << "list :\t\t\tlist all current proxified connections and users" << std::endl
+        << "endpoint [name] :\tlist all available endpoint OR select an endpoint " << std::endl
+        << "alias [name] :\t\tlist all available usernames (aliases) for selected endpoint OR select an alias" << std::endl
+        << "connect :\t\tconnect to the previously selected endpoint and username alias" << std::endl
+        << "help :\t\t\tdisplay this message" << std::endl
+        << "exit :\t\t\tterminate current connection" << std::endl << std::endl;
+    return false;
+}
+
+bool SshProxy::_exitCommand(const std::vector<std::string> tokens)
+{
+    std::cout << "Exiting..." << std::endl;
+    return true;
 }

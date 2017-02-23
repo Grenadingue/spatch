@@ -19,7 +19,8 @@ const int ConfigurationController::init()
     std::map <std::string, std::vector <std::pair <std::string, std::string>>> datas;
     std::vector <std::pair <std::string, std::string>> keysAndValues;
 
-    ConfigurationReader* foo2 = new ConfigurationReader("./config/spatch/config.ini");
+    ConfigurationReader* foo2 = new ConfigurationReader("/etc/spatch/config.ini");
+    // ConfigurationReader* foo2 = new ConfigurationReader("./config/spatch/config.ini");
     datas = foo2->getDatas();
 
     for (auto const &it : datas) {
