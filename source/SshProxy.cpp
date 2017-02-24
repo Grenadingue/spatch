@@ -180,12 +180,15 @@ bool SshProxy::_connectCommand(const User &user, Endpoint *&endpoint, std::strin
 {
     SshClient client(*endpoint, alias, command);
 
-    std::cout << "Inside _connectCommand()" << std::endl << std::endl;
-    if (command)
-        execl("/bin/sh", "sh", "-c", command, NULL);
-    else
-        execl("/bin/sh", "sh", "-l", NULL, NULL);
-    return false;
+    client.connect();
+    return true;
+
+    // std::cout << "Inside _connectCommand()" << std::endl << std::endl;
+    // if (command)
+    //     execl("/bin/sh", "sh", "-c", command, NULL);
+    // else
+    //     execl("/bin/sh", "sh", "-l", NULL, NULL);
+    // return false;
 }
 
 bool SshProxy::_helpCommand(const std::vector<std::string> tokens)

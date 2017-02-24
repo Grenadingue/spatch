@@ -5,6 +5,10 @@
 #include <string.h>
 #include "SshClient.hpp"
 
+#include <vector>
+#include <string>
+#include <iostream>
+
 int verify_knownhost(ssh_session session)
 {
   int state, hlen;
@@ -114,66 +118,6 @@ int list_home_remote_directory(ssh_session session)
   return SSH_OK;
 }
 
-int ssh_client()
-{
-  ssh_session my_ssh_session = NULL;
-  int verbosity = SSH_LOG_PROTOCOL;
-  int port = 22;
-  int rc = SSH_ERROR;
-  char *password = NULL;
-
-  my_ssh_session = ssh_new();
-  if (my_ssh_session == NULL)
-    {
-      printf("ssh_new() failure\n");
-      return (-1);
-    }
-  printf("ssh_new() success!\n");
-
-  if (ssh_options_set(my_ssh_session, SSH_OPTIONS_HOST, "localhost") != 0 ||
-      ssh_options_set(my_ssh_session, SSH_OPTIONS_LOG_VERBOSITY, &verbosity) != 0 ||
-      ssh_options_set(my_ssh_session, SSH_OPTIONS_PORT, &port) != 0)
-    {
-      fprintf(stderr, "Error connecting to localhost: %s\n", ssh_get_error(my_ssh_session));
-      return (-1);
-    }
-  printf("ssh_options_set() success!\n");
-
-  rc = ssh_connect(my_ssh_session);
-  if (rc != SSH_OK)
-    {
-      fprintf(stderr, "Error connecting to localhost: %s\n", ssh_get_error(my_ssh_session));
-      return (-1);
-    }
-  printf("ssh_connect() success!\n");
-
-  // Verify the server's identity
-  if (verify_knownhost(my_ssh_session) < 0)
-  {
-    ssh_disconnect(my_ssh_session);
-    ssh_free(my_ssh_session);
-    return (-1);
-  }
-
-  // Authenticate ourselves
-  password = getpass("Password: ");
-  rc = ssh_userauth_password(my_ssh_session, NULL, password);
-  if (rc != SSH_AUTH_SUCCESS)
-  {
-    fprintf(stderr, "Error authenticating with password: %s\n", ssh_get_error(my_ssh_session));
-    ssh_disconnect(my_ssh_session);
-    ssh_free(my_ssh_session);
-    return (-1);
-  }
-  printf("ssh_userauth_password() success!\n");
-
-  list_home_remote_directory(my_ssh_session);
-
-  ssh_disconnect(my_ssh_session);
-  ssh_free(my_ssh_session);
-  return (0);
-}
-
 SshClient::SshClient(const Endpoint &endpoint, const std::string &username, const char *command)
     : _endpoint(endpoint), _username(username), _command(command)
 {
@@ -181,4 +125,84 @@ SshClient::SshClient(const Endpoint &endpoint, const std::string &username, cons
 
 SshClient::~SshClient()
 {
+}
+
+void SshClient::connect()
+{
+    ssh_session my_ssh_session = NULL;
+    int verbosity = SSH_LOG_NONE;
+    int rc = SSH_ERROR;
+
+    my_ssh_session = ssh_new();
+    if (my_ssh_session == NULL)
+      {
+        printf("ssh_new() failure\n");
+        return;
+      }
+
+    if (ssh_options_set(my_ssh_session, SSH_OPTIONS_HOST, _endpoint.ipAdress.c_str()) != 0 ||
+        // ssh_options_set(my_ssh_session, SSH_OPTIONS_LOG_VERBOSITY_STR, "1") != 0 ||
+        ssh_options_set(my_ssh_session, SSH_OPTIONS_LOG_VERBOSITY, &verbosity) != 0 ||
+        ssh_options_set(my_ssh_session, SSH_OPTIONS_PORT_STR, _endpoint.port.c_str()) != 0 ||
+        ssh_options_set(my_ssh_session, SSH_OPTIONS_USER, _username.c_str()) != 0)
+      {
+        fprintf(stderr, "Error connecting to remote host: %s\n", ssh_get_error(my_ssh_session));
+        return;
+      }
+
+    rc = ssh_connect(my_ssh_session);
+    if (rc != SSH_OK)
+      {
+        fprintf(stderr, "Error connecting to localhost: %s\n", ssh_get_error(my_ssh_session));
+        return;
+      }
+
+    // Verify the server's identity
+    if (verify_knownhost(my_ssh_session) < 0)
+    {
+      ssh_disconnect(my_ssh_session);
+      ssh_free(my_ssh_session);
+      return;
+    }
+
+    std::string configFolder = "/etc/spatch/";
+    std::vector<std::string> keys = { "id_rsa", "id_dsa" };
+    ssh_key pubkey = NULL, privkey = NULL;
+    bool authenticated = false;
+
+    for (auto key : keys)
+    {
+        const std::string privateKeyPath = configFolder + key + "_" + _endpoint.name;
+        const std::string publicKeyPath = privateKeyPath + ".pub";
+
+        if (ssh_pki_import_pubkey_file(publicKeyPath.c_str(), &pubkey) == SSH_OK)
+        {
+            if (ssh_userauth_try_publickey(my_ssh_session, NULL, pubkey) == SSH_AUTH_SUCCESS)
+            {
+                if (ssh_pki_import_privkey_file(privateKeyPath.c_str(), NULL, NULL, NULL, &privkey) == SSH_OK)
+                {
+                    if (ssh_userauth_publickey(my_ssh_session, NULL, privkey) == SSH_AUTH_SUCCESS)
+                    {
+                        authenticated = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    if (!authenticated)
+    {
+      fprintf(stderr, "Error authenticating: %s\n", ssh_get_error(my_ssh_session));
+      ssh_disconnect(my_ssh_session);
+      ssh_free(my_ssh_session);
+      return;
+    }
+
+    list_home_remote_directory(my_ssh_session);
+
+    ssh_disconnect(my_ssh_session);
+    ssh_free(my_ssh_session);
+    ssh_key_free(pubkey);
+    ssh_key_free(privkey);
 }

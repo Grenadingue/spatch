@@ -14,6 +14,8 @@ private:
 public:
     SshClient(const Endpoint &endpoint, const std::string &username, const char *command);
     ~SshClient();
+
+    void connect();
 };
 
 #endif // !SSH_CLIENT_HPP
