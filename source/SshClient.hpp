@@ -1,6 +1,7 @@
 #ifndef SSH_CLIENT_HPP
 # define SSH_CLIENT_HPP
 
+# include <libssh/libssh.h>
 # include <string>
 # include "Endpoint.hpp"
 
@@ -16,6 +17,10 @@ public:
     ~SshClient();
 
     void connect();
+
+private:
+    int _verifyKnownhost(ssh_session session);
+    void _execRequest(ssh_session session);
 };
 
 #endif // !SSH_CLIENT_HPP

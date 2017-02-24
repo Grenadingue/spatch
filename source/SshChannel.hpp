@@ -5,10 +5,6 @@
 # include "AccessListController.hpp"
 # include "SshProxy.hpp"
 
-// temporary
-# define USER "myuser"
-# define PASS "x"
-
 class SshChannel;
 
 struct channel_data_struct
