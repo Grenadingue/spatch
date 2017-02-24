@@ -1,5 +1,11 @@
-# spatch
+# Spatch
 An ssh proxy with access control list
+
+## User documentation
+See [user documentation](./documents/user_documentation.md)
+
+## Technical diagrams
+See [technical diagrams](./documents/technical_documentation.md)
 
 ## How to?
 ### Use `libssh` examples
